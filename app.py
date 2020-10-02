@@ -12,7 +12,10 @@ import dash_core_components as dcc
 
 
 
-app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = dash.Dash(__name__,external_stylesheets=[dbc.themes.BOOTSTRAP])
+server = app.server
+
+#copying standing dataframe for finding the top three
 leader_standing = standing.copy()
 
 #static bar chart data points for leader board
