@@ -3,7 +3,7 @@ import dash_html_components as html
 import dash_table
 from webscrap import team1_points,team2_points,team3_points,team4_points,team5_points,team6_points,team7_points,team8_points
 
-
+#creating seperate cards for each team players individual scores
 card1 = dbc.Card(
     [
         dbc.CardBody(

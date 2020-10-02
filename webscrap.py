@@ -2,12 +2,17 @@ from bs4 import BeautifulSoup as soup
 from urllib.request import urlopen as uReq
 import pandas as pd
 
+#using the url to connect to the website
 page_url = "https://www.iplt20.com/stats/2020/player-points"
 uClient = uReq(page_url)
+
+#using beautiful soup to parse the webpage to read
 page_soup = soup(uClient.read(), "html.parser")
 
+#inspecting the website html elments and grbbing the top player names
 container1 = page_soup.findAll("div", {"class": "top-players__player-name"})
 
+#removing all other symbols except the player name
 player_list = []
 for play in container1:
     player_list.append(play.text.replace('\n', '').strip())
@@ -17,19 +22,21 @@ for names in player_list:
     remove_inbetween_spaces = " ".join(names.split())
     player_names.append(remove_inbetween_spaces)
 
+#saving the player name in a dataframe
 df = pd.DataFrame(player_names,columns ={'Player Name'})
 
+#retrieving their corresponding score and typecasting str to float
 container2 = page_soup.findAll("td", {"class": "top-players__pts top-players__padded is-active"})
 
 points_list = []
 for points in container2:
     points_list.append(points.text.replace('\n', '').strip())
 
-
 points_list = [float(i) for i in points_list]
 
 df['Points'] = pd.DataFrame(points_list)
 
+# multiplying scores for captain 2x and vc 1.5x
 def score_multiplier(captain,vice_captain,team_df):
     cap_index = team_df.index[team_df['Player Name'] == captain]
     vice_cap_index = team_df.index[team_df['Player Name'] == vice_captain]
@@ -40,7 +47,7 @@ def score_multiplier(captain,vice_captain,team_df):
     return team_df
 
 
-
+#checking the team players and saving in different data frame
 team1 = ['Virat Kohli','KL Rahul','Trent Boult','Nicholas Pooran',
          'Ravi Bishnoi','Navdeep Saini','Pat Cummins','Eoin Morgan',
          'Murali Vijay','Avesh Khan','Krishnappa Gowtham']
@@ -116,12 +123,15 @@ team8_multi = score_multiplier('Dinesh Karthik','Nitish Rana',team8_df)
 df8 = {'Player Name':'Total Score','Points':team8_multi['Points'].sum()}
 team8_points = team8_multi.append(df8,ignore_index=True,sort=False)
 
+#total points for each teams
 data = [df1['Points'],df2['Points'],df3['Points'],df4['Points'],
         df5['Points'],df6['Points'],df7['Points'],df8['Points']]
 
 team_names = ['Pitch Smashers','Groundbreakers','Blazing Strikers','Kingsguard',
               'DOMinatorS','Dragon Hearts','Team 7','Team 8']
 df_table = {'Team Name':team_names,'Scores':data}
+
+#teams scores and standing
 standing = pd.DataFrame(df_table).sort_values(by='Scores',ascending=False)
 
 print(standing)

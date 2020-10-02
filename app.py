@@ -1,4 +1,3 @@
-
 import dash_bootstrap_components as dbc
 import dash_html_components as html
 import dash
@@ -16,11 +15,14 @@ import dash_core_components as dcc
 app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 leader_standing = standing.copy()
 
-Leader = pd.DataFrame({'x':['Second','First','Third'],'y':[70,100,50]})
+#static bar chart data points for leader board
+leaderboard_datapoints = pd.DataFrame({'x':['Second','First','Third'],'y':[70,100,50]})
 
+#returing first, second, third standings
 idx = leader_standing['Scores'].idxmax()
 First_Stand = '💥 ' + leader_standing.loc[idx][0]
 
+#dropping the first top team from table to get second top
 leader_standing.drop(index=idx,inplace = True)
 
 idx2 = leader_standing['Scores'].idxmax()
@@ -30,33 +32,18 @@ leader_standing.drop(index=idx2,inplace = True)
 idx3 = leader_standing['Scores'].idxmax()
 Third_Stand = '💥 ' + leader_standing.loc[idx3][0]
 
-z = [Second_Stand,First_Stand,Third_Stand]
+#storing the top 3 teams to send as labels for bar chart
+List_table_toppers = [Second_Stand,First_Stand,Third_Stand]
 
 
-fig = go.Figure(data=[go.Bar(
-            x=Leader['x'], y=Leader['y'],
-            text=z,
-            textposition='auto',
-        )])
-fig.update_traces(textposition='outside')
-
-fig.update_layout(xaxis_showgrid=False, yaxis_showgrid=False,
-                  xaxis_zeroline=False, yaxis_zeroline=False, bargap=.10)
-fig.update_yaxes(showticklabels=False)
-fig.update_xaxes(showticklabels=False)
-fig.update_layout(
-    autosize=False,
-    width=600,
-    height=500,)
-
-
-
+#app body and layout
 header = html.Div([
     dbc.Row(dbc.Col()),
     dbc.Row(dbc.Col(html.Div(html.H1("DoMS IPL Fantasy 2020 ")),style={'color': 'rgb(96, 64, 32)'},width={"offset": 4})),
     # dbc.Row(dbc.Col(html.Div(html.H4("E Sala Cuppu Namde, RCB")),width={"size":12,"offset": 1})),
 ])
-Leader = pd.DataFrame({'x':['Second','First','Third'],'y':[70,100,50]})
+
+#layout for the app
 row1 = html.Div(
     [
         dbc.CardDeck(
@@ -130,7 +117,7 @@ app.layout = html.Div([
     row2
 ])
 
-
+#call back for dynamically updating leaderboard on load
 @app.callback(Output('page-content', 'figure'),
               [Input('url', 'pathname')])
 
@@ -138,8 +125,8 @@ def update_page(path):
     if path is None: raise PreventUpdate
     else:
         fig = go.Figure(data=[go.Bar(
-            x=Leader['x'], y=Leader['y'],
-            text=z,
+            x=leaderboard_datapoints['x'], y=leaderboard_datapoints['y'],
+            text=List_table_toppers,
             textposition='auto',
             hoverinfo = 'skip',
         )])
