@@ -18,7 +18,7 @@ server = app.server
 #copying standing dataframe for finding the top three
 leader_standing = standing.copy()
 
-#static bar chart data points for leader board
+#assets bar chart data points for leader board
 leaderboard_datapoints = pd.DataFrame({'x':['Second','First','Third'],'y':[70,100,50]})
 
 #returing first, second, third standings
