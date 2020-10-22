@@ -66,12 +66,14 @@ team1_points = team1_multi.append(df1,ignore_index=True,sort=False)
 
 team2 = ['Steve Smith','Yuzvendra Chahal','Dwayne Bravo','Shreyas Iyer',
          'Mujeeb Ur Rahman','Suryakumar Yadav','Kedar Jadhav','Piyush Chawla',
-         'Aaron Finch','Parthiv Patel','Mayank Markande']
+         'Aaron Finch','Parthiv Patel','Mayank Markande','Chris Morris']
 team2_df = df[df['Player Name'].isin(team2)]
 
 team2_multi = score_multiplier('Yuzvendra Chahal','Shreyas Iyer',team2_df)
+team2_replace = play_replace('Chris Morris',team2_df,117.5)
 df2 = {'Player Name':'Total Score','Points':team2_multi['Points'].sum()}
 team2_points = team2_multi.append(df2,ignore_index=True,sort=False)
+
 
 
 team3 = ['Sunil Narine','Kane Williamson','Chris Lynn','Kieron Pollard',
