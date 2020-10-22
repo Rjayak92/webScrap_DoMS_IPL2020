@@ -46,6 +46,10 @@ def score_multiplier(captain,vice_captain,team_df):
     team_df.loc[vice_cap_index, 'Player Name'] = vice_captain + ' (VC)'
     return team_df
 
+def play_replace(player_replace,replace_df,points):
+    replace_index = replace_df.index[replace_df['Player Name'] == player_replace]
+    replace_df.loc[replace_index, 'Points'] = replace_df.loc[replace_index, 'Points'] - points
+    return replace_df
 
 #checking the team players and saving in different data frame
 team1 = ['Virat Kohli','KL Rahul','Trent Boult','Nicholas Pooran',
@@ -72,21 +76,24 @@ team2_points = team2_multi.append(df2,ignore_index=True,sort=False)
 
 team3 = ['Sunil Narine','Kane Williamson','Chris Lynn','Kieron Pollard',
          'Krunal Pandya','Deepak Chahar','Ajinkya Rahane','Robin Uthappa',
-         'Bhuvneshwar Kumar','Siddarth Kaul','Rahul Tripathi']
+         'Bhuvneshwar Kumar','Siddarth Kaul','Rahul Tripathi','Shivam Mavi']
 team3_df = df[df['Player Name'].isin(team3)]
-
 team3_multi = score_multiplier('Kieron Pollard','Kane Williamson',team3_df)
+team3_replace = play_replace('Shivam Mavi',team3_df,52.5)
 df3 = {'Player Name':'Total Score','Points':team3_multi['Points'].sum()}
 team3_points = team3_multi.append(df3,ignore_index=True,sort=False)
 
+
+
 team4=['Rishabh Pant','David Warner','Imran Tahir','Shubman Gill',
        'Shreyas Gopal','Sandeep Sharma','Vijay Shankar','Moeen Ali',
-       'Shimron Hetmyer','Ishant Sharma','Sarfaraz Khan']
+       'Shimron Hetmyer','Ishant Sharma','Sarfaraz Khan','Varun Chakravarthy']
 team4_df = df[df['Player Name'].isin(team4)]
-
 team4_multi = score_multiplier('David Warner','Rishabh Pant',team4_df)
+team4_replace = play_replace('Varun Chakravarthy',team4_df,59)
 df4 = {'Player Name':'Total Score','Points':team4_multi['Points'].sum()}
 team4_points = team4_multi.append(df4,ignore_index=True,sort=False)
+
 
 team5 = ['Ravindra Jadeja','MS Dhoni','Ambati Rayudu','Sheldon Cottrell',
          'Jonny Bairstow','Kuldeep Yadav','Shane Watson','Jaydev Unadkat',
@@ -94,6 +101,7 @@ team5 = ['Ravindra Jadeja','MS Dhoni','Ambati Rayudu','Sheldon Cottrell',
 team5_df = df[df['Player Name'].isin(team5)]
 
 team5_multi = score_multiplier('Jos Buttler','MS Dhoni',team5_df)
+
 df5 = {'Player Name':'Total Score','Points':team5_multi['Points'].sum()}
 team5_points = team5_multi.append(df5,ignore_index=True,sort=False)
 
