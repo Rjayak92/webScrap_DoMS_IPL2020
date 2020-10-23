@@ -164,7 +164,7 @@ card8 = dbc.Card(
         dbc.CardBody(
             [
 
-                html.H5("Jamun", className="card-title"),
+                html.H5("Karandeep", className="card-title"),
                 dash_table.DataTable(
                     columns=[{"name": i, "id": i} for i in team8_points.columns],
                     data=team8_points.to_dict('records'),
