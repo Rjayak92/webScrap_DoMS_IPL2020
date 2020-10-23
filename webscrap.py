@@ -49,7 +49,13 @@ def score_multiplier(captain,vice_captain,team_df):
 def play_replace(player_replace,replace_df,points):
     replace_index = replace_df.index[replace_df['Player Name'] == player_replace]
     replace_df.loc[replace_index, 'Points'] = replace_df.loc[replace_index, 'Points'] - points
+    replace_df.loc[replace_index, 'Player Name'] = player_replace + ' (Replaced)'
     return replace_df
+
+def add_ruled_out(player_name,player_df):
+    ruled_index = player_df.index[player_df['Player Name'] == player_name]
+    player_df.loc[ruled_index, 'Player Name'] = player_name + ' (Ruled out)'
+    return player_df
 
 #checking the team players and saving in different data frame
 team1 = ['Virat Kohli','KL Rahul','Trent Boult','Nicholas Pooran',
@@ -71,6 +77,7 @@ team2_df = df[df['Player Name'].isin(team2)]
 
 team2_multi = score_multiplier('Yuzvendra Chahal','Shreyas Iyer',team2_df)
 team2_replace = play_replace('Chris Morris',team2_df,117.5)
+team2_ruled_out = add_ruled_out('Dwayne Bravo',team2_df)
 df2 = {'Player Name':'Total Score','Points':team2_multi['Points'].sum()}
 team2_points = team2_multi.append(df2,ignore_index=True,sort=False)
 
@@ -82,9 +89,9 @@ team3 = ['Sunil Narine','Kane Williamson','Chris Lynn','Kieron Pollard',
 team3_df = df[df['Player Name'].isin(team3)]
 team3_multi = score_multiplier('Kieron Pollard','Kane Williamson',team3_df)
 team3_replace = play_replace('Shivam Mavi',team3_df,52.5)
+team3_ruled_out = add_ruled_out('Bhuvneshwar Kumar',team3_df)
 df3 = {'Player Name':'Total Score','Points':team3_multi['Points'].sum()}
 team3_points = team3_multi.append(df3,ignore_index=True,sort=False)
-
 
 
 team4=['Rishabh Pant','David Warner','Imran Tahir','Shubman Gill',
@@ -93,6 +100,7 @@ team4=['Rishabh Pant','David Warner','Imran Tahir','Shubman Gill',
 team4_df = df[df['Player Name'].isin(team4)]
 team4_multi = score_multiplier('David Warner','Rishabh Pant',team4_df)
 team4_replace = play_replace('Varun Chakravarthy',team4_df,59)
+team4_ruled_out = add_ruled_out('Ishant Sharma',team4_df)
 df4 = {'Player Name':'Total Score','Points':team4_multi['Points'].sum()}
 team4_points = team4_multi.append(df4,ignore_index=True,sort=False)
 
