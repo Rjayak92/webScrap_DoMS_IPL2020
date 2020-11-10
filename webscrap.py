@@ -152,4 +152,4 @@ df_table = {'Team Name':team_names,'Scores':data}
 #teams scores and standing
 standing = pd.DataFrame(df_table).sort_values(by='Scores',ascending=False)
 
-print(standing)
+print("current standings",standing)
